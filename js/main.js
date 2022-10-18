@@ -174,10 +174,6 @@ function main(){
     var classInSession = (aspenInfo.data.isClassInSession);
     var blockSchedule = (aspenInfo.data.blockOrder);
 
-    //var isHalfDay = (aspenInfo.calendar.isHalfDay);
-
-    //clock(isHalfDay);
-
     document.getElementById('dayNumber').innerHTML = day;
 
     if (classInSession) { document.getElementById('dayProgress').setAttribute('class', 'progress-bar progress-bar-striped progress-bar-danger active'); }
@@ -217,6 +213,7 @@ function main(){
       var blocks = "";
       flex_block = -1;
       num_day = (new Date()).getDay();
+      flexToday = false;
       
       blockSchedule.forEach(function(b, index){
         lunch_class = index === 3 ? 'lunchBlock' : '';
@@ -228,11 +225,18 @@ function main(){
         }
         if(index == flex_block){
           blocks += "<div class='blockContainer flexBlock' style='width: "+block_percent_map["f"]+"%'></div>"
+          flexToday = true;
         }
       });
       document.getElementById('schedule-body').innerHTML = blocks;
     } else {
       document.getElementById('schedule-panel').parentElement.innerHTML = "";
+    }
+    if(flexToday) {
+      document.getElementById("dayTimer").innerHTML = "D Tues/Fri";
+      document.getElementById("panel-title").innerHTML = "Flex"
+    } else {  
+      clock(false);
     }
   });
 
@@ -340,7 +344,6 @@ function main(){
         interval = startAnnouncementCycle(announcements);
       }
     });
-  clock(false);
   //document.getElementById('fetchIssue').setAttribute('style', 'display:inherit;');
   document.getElementById('mHeader').innerHTML = "M";
 }
