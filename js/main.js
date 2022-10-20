@@ -111,6 +111,7 @@ function clock(isHalfDay){
     }
 
     document.getElementById("dayTimerOrFlexBlock").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+
     if (document.getElementById('schedule-progress-bar') !== null) {
       document.getElementById('schedule-progress-bar').setAttribute('style', 'width: ' + percentThroughDay + '%;');
       document.getElementById('schedule-progress-bar').innerHTML = Math.floor(percentThroughDay) + '%';
@@ -174,8 +175,6 @@ function main(){
     var classInSession = (aspenInfo.data.isClassInSession);
     var blockSchedule = (aspenInfo.data.blockOrder);
 
-    document.getElementById('dayNumber').innerHTML = day;
-
     if (classInSession) { document.getElementById('dayProgress').setAttribute('class', 'progress-bar progress-bar-striped progress-bar-danger active'); }
     document.getElementById('lastUpdated').innerHTML = lastUpdated.toLocaleString();
 
@@ -224,7 +223,7 @@ function main(){
           blocks += "<div class='blockContainer "+lunch_class+" "+last_class+"' style='width: "+block_percent_map[index]+"%'>"+b+"</div>";
         }
         if(index == flex_block){
-          blocks += "<div class='blockContainer flexBlock' style='width: "+block_percent_map["f"]+"%'></div>"
+          blocks += "<div class='blockContainer flexBlock' style='width: "+block_percent_map["f"]+"%'></div>";
           flexToday = true;
         }
       });
@@ -232,12 +231,13 @@ function main(){
     } else {
       document.getElementById('schedule-panel').parentElement.innerHTML = "";
     }
-    if(flexToday) {
-      document.getElementById("dayTimerOrFlexBlock").innerHTML = "D Tues/Fri";
-      document.getElementById("dayOrFlex").innerHTML = "Flex"
-    } else {  
-      clock(false);
+    document.getElementById('flex').innerHTML = day;
+    if(!flexToday) {
+      document.getElementById('flex').innerHTML = "D Tues/Fri";
     }
+    
+    clock(false);
+    
   });
 
   var announcementsEndpoint = new HttpClient();
